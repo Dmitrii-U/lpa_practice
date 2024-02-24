@@ -14,9 +14,6 @@ class Game:
 
         self.moves = 9
         self.board = [[EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, ] for _ in range(3)]
-        self.user_symbol = self.comp_symbol = None
-        self.win_sequence = None
-        self.loss_sequence = None
         self.indexes_list = (
             ((0, 0), (0, 1), (0, 2)),
             ((1, 0), (1, 1), (1, 2)),
@@ -28,15 +25,24 @@ class Game:
             ((0, 2), (1, 2), (2, 2)),
         )
 
+        while True:
+            user_input = input('Введите чем хотите ходить Х или 0: ').upper()
+            if user_input in ('X', 'O', 'Х', 'О', '0'):
+                self.user_symbol, self.comp_symbol = ('X', '0') if user_input in 'XxХх' else ('0', 'X')
+                self.win_sequence = [self.user_symbol] * 3
+                self.loss_sequence = [self.comp_symbol] * 3
+                return
+
     def display_board(self) -> None:
         for row in self.board:
-            print(''.join((lambda x: f'[{x}]', row)))  # noqa: T201
+            print('|'.join(f' {x} ' for x in row))  # noqa: T201
+            print('___________')  # noqa: T201
 
     def check_win(self) -> None:
         for indexes in self.indexes_list:
             if [self.board[i[0]][i[1]] for i in indexes] == self.win_sequence:
                 self.display_board()
-                sys.exit('Поздравляем с победой')
+                sys.exit('Поздравляем с победой !!! 🎉')
             if [self.board[i[0]][i[1]] for i in indexes] == self.loss_sequence:
                 self.display_board()
                 sys.exit('Вы проиграли')
@@ -72,17 +78,7 @@ class Game:
                 self.check_win()
                 return
 
-    def choice_symbol(self) -> None:
-        while True:
-            symbol = input('Введите чем хотите ходить Х или 0: ').upper()
-            if symbol in ('X', 'O', 'Х', 'О', '0'):
-                self.user_symbol, self.comp_symbol = ('X', '0') if symbol in 'XxХх' else ('0', 'X')
-                self.win_sequence = [self.user_symbol] * 3
-                self.loss_sequence = [self.comp_symbol] * 3
-                return
-
     def run(self) -> None:
-        self.choice_symbol()
         while True:
             self.display_board()
             self.get_user_choice()
