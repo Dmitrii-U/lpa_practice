@@ -1,6 +1,6 @@
 Собрать образ командой
 
-`docker build --tag <tag name> <path to Dockerfale>`
+`docker build --tag <tag name> <path to Dockerfile>`
 
 Запустить проект в docker:
 
